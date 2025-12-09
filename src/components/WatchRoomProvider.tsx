@@ -4,8 +4,10 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { useWatchRoom } from '@/hooks/useWatchRoom';
 import type { Room, Member, ChatMessage, WatchRoomConfig } from '@/types/watch-room';
-import type { WatchRoomSocket } from '@/lib/watch-room-socket';
 import Toast, { ToastProps } from '@/components/Toast';
+
+// Import type from watch-room-socket
+type WatchRoomSocket = import('@/lib/watch-room-socket').WatchRoomSocket;
 
 interface WatchRoomContextType {
   socket: WatchRoomSocket | null;

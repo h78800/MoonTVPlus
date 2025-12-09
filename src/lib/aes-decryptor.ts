@@ -139,8 +139,8 @@ export class AESDecryptor {
     const invSubMix2 = invSubMix[2];
     const invSubMix3 = invSubMix[3];
 
-    let prev;
-    let t;
+    let prev: number = 0;
+    let t: number;
 
     for (ksRow = 0; ksRow < ksRows; ksRow++) {
       if (ksRow < keySize) {
@@ -166,6 +166,10 @@ export class AESDecryptor {
         t = keySchedule[ksRow];
       } else {
         t = keySchedule[ksRow - 4];
+      }
+
+      if (t === undefined) {
+        throw new Error('Invalid key schedule');
       }
 
       if (invKsRow < 4 || ksRow <= 4) {

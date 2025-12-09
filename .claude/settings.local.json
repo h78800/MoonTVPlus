@@ -9,7 +9,8 @@
       "WebFetch(domain:www.artplayer.org)",
       "WebFetch(domain:m.douban.com)",
       "WebFetch(domain:movie.douban.com)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(pnpm typecheck)"
     ],
     "deny": [],
     "ask": []

@@ -545,8 +545,10 @@ export class M3U8Downloader {
           if (xhr.status >= 200 && xhr.status < 300) {
             task.aesConf.key = xhr.response;
             // 初始化 AES 解密器
-            task.aesConf.decryption = new AESDecryptor();
-            task.aesConf.decryption.expandKey(task.aesConf.key);
+            if (task.aesConf.key) {
+              task.aesConf.decryption = new AESDecryptor();
+              task.aesConf.decryption.expandKey(task.aesConf.key);
+            }
             resolve();
           } else {
             reject(new Error('获取 AES 密钥失败'));
@@ -562,7 +564,7 @@ export class M3U8Downloader {
    * AES 解密
    */
   private aesDecrypt(task: M3U8DownloadTask, data: ArrayBuffer, index: number): ArrayBuffer {
-    if (!task.aesConf.decryption) {
+    if (!task.aesConf.decryption || !task.aesConf.key) {
       return data;
     }
 
