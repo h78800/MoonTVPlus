@@ -5875,7 +5875,7 @@ const ConfigFileComponent = ({
   );
 };
 
-// 主题配置组件
+// 个性化配置组件
 const ThemeConfigComponent = ({
   config,
   refreshConfig,
@@ -5986,7 +5986,7 @@ const ThemeConfigComponent = ({
         showAlert({
           type: 'success',
           title: '保存成功',
-          message: '主题配置已更新',
+             message: '个性化配置已更新',
           timer: 2000,
         });
 
@@ -6345,7 +6345,7 @@ const ThemeConfigComponent = ({
               : buttonStyles.success
           }
         >
-          {isLoading('saveThemeConfig') ? '保存中...' : '保存主题配置'}
+          {isLoading('saveThemeConfig') ? '保存中...' : '保存个性化配置'}
         </button>
       </div>
 
@@ -8377,6 +8377,10 @@ const AIConfigComponent = ({
   const [maxTokens, setMaxTokens] = useState(1000);
   const [systemPrompt, setSystemPrompt] = useState('');
 
+  // AI默认消息配置
+  const [defaultMessageNoVideo, setDefaultMessageNoVideo] = useState('');
+  const [defaultMessageWithVideo, setDefaultMessageWithVideo] = useState('');
+
   // 从配置加载数据
   useEffect(() => {
     if (config?.AIConfig) {
@@ -8397,6 +8401,8 @@ const AIConfigComponent = ({
       setTemperature(config.AIConfig.Temperature ?? 0.7);
       setMaxTokens(config.AIConfig.MaxTokens ?? 1000);
       setSystemPrompt(config.AIConfig.SystemPrompt || '');
+      setDefaultMessageNoVideo(config.AIConfig.DefaultMessageNoVideo || '');
+      setDefaultMessageWithVideo(config.AIConfig.DefaultMessageWithVideo || '');
     }
   }, [config]);
 
@@ -8427,6 +8433,8 @@ const AIConfigComponent = ({
             Temperature: temperature,
             MaxTokens: maxTokens,
             SystemPrompt: systemPrompt,
+            DefaultMessageNoVideo: defaultMessageNoVideo,
+            DefaultMessageWithVideo: defaultMessageWithVideo,
           }),
         });
 
@@ -8786,6 +8794,46 @@ const AIConfigComponent = ({
               placeholder='可自定义AI的角色和行为规则...'
               className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'
             />
+          </div>
+        </div>
+    </details>
+
+      {/* AI默认消息配置 */}
+      <details className='p-4 border border-gray-200 dark:border-gray-700 rounded-lg'>
+        <summary className='text-sm font-semibold text-gray-900 dark:text-gray-100 cursor-pointer'>
+          默认消息配置 (可选)
+        </summary>
+        <div className='mt-4 space-y-4'>
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              无视频时的默认消息
+            </label>
+            <textarea
+              value={defaultMessageNoVideo}
+              onChange={(e) => setDefaultMessageNoVideo(e.target.value)}
+              rows={3}
+              placeholder='例如：你好！我是MoonTVPlus的AI影视助手。想看什么电影或剧集？需要推荐吗？'
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+            />
+            <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
+              当用户在首页或没有视频上下文时打开AI问片，将显示此默认消息
+            </p>
+          </div>
+
+          <div>
+            <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
+              有视频时的默认消息
+            </label>
+            <textarea
+              value={defaultMessageWithVideo}
+              onChange={(e) => setDefaultMessageWithVideo(e.target.value)}
+              rows={3}
+              placeholder='例如：你好！我看到你正在浏览《{title}》，有什么想了解的吗？'
+              className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+            />
+            <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>
+              当用户在视频卡片或播放页打开AI问片时，将显示此默认消息。支持使用 <code className='px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded text-xs font-mono'>{'{title}'}</code> 替换符来显示片名
+            </p>
           </div>
         </div>
       </details>
@@ -9690,9 +9738,9 @@ function AdminPageClient() {
             <RegistrationConfigComponent config={config} refreshConfig={fetchConfig} />
           </CollapsibleTab>
 
-          {/* 主题配置标签 */}
+          {/* 个性化配置标签 */}
           <CollapsibleTab
-            title='主题配置'
+            title='个性化配置'
             icon={
               <Palette
                 size={20}

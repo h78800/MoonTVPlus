@@ -120,6 +120,7 @@ function PlayPageClient() {
   // AI问片状态
   const [showAIChat, setShowAIChat] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(false);
+  const [aiDefaultMessageWithVideo, setAiDefaultMessageWithVideo] = useState('');
 
   // 检查AI功能是否启用
   useEffect(() => {
@@ -128,6 +129,12 @@ function PlayPageClient() {
         (window as any).RUNTIME_CONFIG?.AI_ENABLED &&
         (window as any).RUNTIME_CONFIG?.AI_ENABLE_PLAYPAGE_ENTRY;
       setAiEnabled(enabled);
+
+      // 加载AI默认消息配置
+      const defaultMsg = (window as any).RUNTIME_CONFIG?.AI_DEFAULT_MESSAGE_WITH_VIDEO;
+      if (defaultMsg) {
+        setAiDefaultMessageWithVideo(defaultMsg);
+      }
     }
   }, []);
 
@@ -7039,7 +7046,7 @@ function PlayPageClient() {
             douban_id: videoDoubanId !== 0 ? videoDoubanId : undefined,
             currentEpisode: currentEpisodeIndex + 1,
           }}
-          welcomeMessage={`想了解《${detail.title}》的更多信息吗？我可以帮你查询剧情、演员、评价等。`}
+          welcomeMessage={aiDefaultMessageWithVideo ? aiDefaultMessageWithVideo.replace('{title}', detail.title || '') : `想了解《${detail.title}》的更多信息吗？我可以帮你查询剧情、演员、评价等。`}
         />
       )}
     </PageLayout>

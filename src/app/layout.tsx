@@ -79,6 +79,8 @@ export default async function RootLayout({
   let aiEnableHomepageEntry = false;
   let aiEnableVideoCardEntry = false;
   let aiEnablePlayPageEntry = false;
+  let aiDefaultMessageNoVideo = '';
+  let aiDefaultMessageWithVideo = '';
   let customCategories = [] as {
     name: string;
     type: 'movie' | 'tv';
@@ -119,6 +121,8 @@ export default async function RootLayout({
     aiEnableHomepageEntry = config.AIConfig?.EnableHomepageEntry || false;
     aiEnableVideoCardEntry = config.AIConfig?.EnableVideoCardEntry || false;
     aiEnablePlayPageEntry = config.AIConfig?.EnablePlayPageEntry || false;
+    aiDefaultMessageNoVideo = config.AIConfig?.DefaultMessageNoVideo || '';
+    aiDefaultMessageWithVideo = config.AIConfig?.DefaultMessageWithVideo || '';
     // 检查是否启用了 OpenList 功能
     openListEnabled = !!(
       config.OpenListConfig?.Enabled &&
@@ -165,6 +169,8 @@ export default async function RootLayout({
     AI_ENABLE_HOMEPAGE_ENTRY: aiEnableHomepageEntry,
     AI_ENABLE_VIDEOCARD_ENTRY: aiEnableVideoCardEntry,
     AI_ENABLE_PLAYPAGE_ENTRY: aiEnablePlayPageEntry,
+    AI_DEFAULT_MESSAGE_NO_VIDEO: aiDefaultMessageNoVideo,
+    AI_DEFAULT_MESSAGE_WITH_VIDEO: aiDefaultMessageWithVideo,
     ENABLE_SOURCE_SEARCH: process.env.NEXT_PUBLIC_ENABLE_SOURCE_SEARCH !== 'false',
   };
 

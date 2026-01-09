@@ -110,6 +110,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(function VideoCard
   const [searchFavorited, setSearchFavorited] = useState<boolean | null>(null); // 搜索结果的收藏状态
   const [showAIChat, setShowAIChat] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(false);
+  const [aiDefaultMessageWithVideo, setAiDefaultMessageWithVideo] = useState('');
   const [showDetailPanel, setShowDetailPanel] = useState(false);
 
   // 检查AI功能是否启用
@@ -119,6 +120,12 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(function VideoCard
         (window as any).RUNTIME_CONFIG?.AI_ENABLED &&
         (window as any).RUNTIME_CONFIG?.AI_ENABLE_VIDEOCARD_ENTRY;
       setAiEnabled(enabled);
+
+      // 加载AI默认消息配置
+      const defaultMsg = (window as any).RUNTIME_CONFIG?.AI_DEFAULT_MESSAGE_WITH_VIDEO;
+      if (defaultMsg) {
+        setAiDefaultMessageWithVideo(defaultMsg);
+      }
     }
   }, []);
 
@@ -1468,7 +1475,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(function VideoCard
             type: actualSearchType as 'movie' | 'tv',
             currentEpisode,
           }}
-          welcomeMessage={`想了解《${actualTitle}》的更多信息吗？我可以帮你查询剧情、演员、评价等。`}
+          welcomeMessage={aiDefaultMessageWithVideo ? aiDefaultMessageWithVideo.replace('{title}', actualTitle || '') : `想了解《${actualTitle}》的更多信息吗？我可以帮你查询剧情、演员、评价等。`}
         />
       )}
 
