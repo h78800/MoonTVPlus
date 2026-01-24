@@ -43,6 +43,12 @@ export async function middleware(request: NextRequest) {
     return handleAuthFailure(request, pathname);
   }
 
+  // 强制要求新版 Cookie（必须包含 tokenId 和 refreshToken）
+  if (!authInfo.tokenId || !authInfo.refreshToken || !authInfo.refreshExpires) {
+    console.log(`Old cookie format detected for ${authInfo.username}, forcing re-login`);
+    return handleAuthFailure(request, pathname);
+  }
+
   // 验证 Access Token 时间戳
   const ACCESS_TOKEN_AGE = TOKEN_CONFIG.ACCESS_TOKEN_AGE;
   const now = Date.now();
